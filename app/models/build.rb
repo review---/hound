@@ -6,6 +6,8 @@ class Build < ActiveRecord::Base
 
   validates :repo, presence: true
 
+  serialize :violations_archive, Array
+
   def status
     if violations.any?
       'failed'
