@@ -4,7 +4,7 @@
 class Violation < ActiveRecord::Base
   belongs_to :build
 
-  serialize :line
+  serialize :line # perhaps remove the line field entirely
 
   # attr_reader :line_number, :filename
 
@@ -17,12 +17,12 @@ class Violation < ActiveRecord::Base
 
   # TODO better name or something else
   def add_messages(new_messages)
-    messages.concat(new_messages)
+    self[:messages].concat(new_messages)
   end
 
-  #def messages
-  #  @messages.uniq
-  #end
+  def messages
+    self[:messages].uniq #.uniq # XXX need to be unique by message content...
+  end
 
   def patch_position
     line.patch_position

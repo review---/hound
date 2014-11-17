@@ -4,7 +4,12 @@ module StyleGuide
 
     def violations_in_file(file)
       Jshintrb.lint(file.content, config).compact.map do |violation|
-        Violation.new(file, violation["line"], violation["reason"])
+        Violation.new(
+          filename: file.filename,
+          line: file.line_at(violation["line"]),
+          line_number: violation["line"],
+          messages: [violation["reason"]]
+        )
       end
     end
 

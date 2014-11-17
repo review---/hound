@@ -5,7 +5,12 @@ module StyleGuide
 
     def violations_in_file(file)
       Coffeelint.lint(file.content, config).map do |violation|
-        Violation.new(file, violation["lineNumber"], violation["message"])
+        Violation.new(
+          filename: file.filename,
+          line: file.line_at(violation["lineNumber"]),
+          line_number: violation["lineNumber"],
+          messages: [violation["message"]]
+        )
       end
     end
 

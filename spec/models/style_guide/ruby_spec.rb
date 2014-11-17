@@ -1,11 +1,4 @@
-require "attr_extras"
-require "rubocop"
-require "sentry-raven"
-
-require "fast_spec_helper"
-require "app/models/style_guide/base"
-require "app/models/style_guide/ruby"
-require "app/models/violation"
+require "spec_helper"
 
 describe StyleGuide::Ruby, "#violations_in_file" do
   context "with default configuration" do
