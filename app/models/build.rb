@@ -6,8 +6,6 @@ class Build < ActiveRecord::Base
 
   validates :repo, presence: true
 
-  # serialize :violations, Array
-
   def status
     if violations.any?
       'failed'
