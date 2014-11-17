@@ -17,7 +17,7 @@ describe StyleGuide::CoffeeScript do
           expect(violation.filename).to eq "test.coffee"
           expect(violation.line).to eq line
           expect(violation.line_number).to eq 1
-          expect(violation.messages).to match_array( # flat_map?
+          expect(violation.messages).to match_array(
             ["Line exceeds maximum allowed length"]
           )
         end

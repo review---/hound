@@ -56,9 +56,6 @@ describe Violations do
     line_number = options.fetch(:line_number, 1)
     message = options.fetch(:message, "illegal syntax")
     line = Line.new(number: line_number, content: "noop", patch_position: 1)
-    # line = double("Line", changed?: true)
-    # file = double("CommitFile", filename: "foo.rb", line_at: line)
-    # Violation.new(file, line_number, message)
     build(
       :violation,
       filename: "foo.rb",

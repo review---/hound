@@ -8,7 +8,6 @@ module StyleGuide
         []
       else
         team.inspect_file(parsed_source(file)).map do |violation|
-          # UPDATE OTHER GUIDES XXX
           Violation.new(
             filename: file.filename,
             line: file.line_at(violation.line),

@@ -7,10 +7,11 @@ describe StyleGuide::JavaScript do
         it "returns a collection of violation objects" do
           repo_config = double("RepoConfig", for: {})
           style_guide = StyleGuide::JavaScript.new(repo_config)
+          filename = "bad.js"
           line = double(:line)
           file = double(
             :file,
-            filename: "bad.js",
+            filename: filename,
             line_at: line,
             content: "var blahh = 'blahh'"
           )
@@ -18,7 +19,7 @@ describe StyleGuide::JavaScript do
           violations = style_guide.violations_in_file(file)
 
           violation = violations.first
-          expect(violation.filename).to eq "bad.js"
+          expect(violation.filename).to eq filename
           expect(violation.line).to eq line
           expect(violation.line_number).to eq 1
           expect(violation.messages).to match_array(["Missing semicolon."])

@@ -15,9 +15,6 @@ class Violations
         @violations[identifier] = violation
       else
         @violations[identifier].add_messages(violation.messages)
-        # violation.messages.each do |message|
-        #   @violations[identifier].messages << message
-        # end
       end
     end
 

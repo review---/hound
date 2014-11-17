@@ -6,22 +6,12 @@ class Violation < ActiveRecord::Base
 
   serialize :line # perhaps remove the line field entirely
 
-  # attr_reader :line_number, :filename
-
-  # def initialize(file, line_number, message)
-  #   @filename = file.filename
-  #   @line = file.line_at(line_number)
-  #   @line_number = line_number
-  #   @messages = [message]
-  # end
-
-  # TODO better name or something else
   def add_messages(new_messages)
     self[:messages].concat(new_messages)
   end
 
   def messages
-    self[:messages].uniq #.uniq # XXX need to be unique by message content...
+    self[:messages].uniq
   end
 
   def patch_position
