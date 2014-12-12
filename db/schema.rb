@@ -74,10 +74,10 @@ ActiveRecord::Schema.define(version: 20141212204648) do
     t.datetime "updated_at"
     t.boolean  "private"
     t.boolean  "in_organization"
-    t.boolean  "enabled",          default: false, null: false
   end
 
-  add_index "repos", ["enabled"], name: "index_repos_on_enabled", using: :btree
+  add_index "repos", ["active"], name: "index_repos_on_active", using: :btree
+  add_index "repos", ["github_id"], name: "index_repos_on_github_id", unique: true, using: :btree
 
   create_table "style_guide_configs", force: true do |t|
     t.string   "name",       null: false

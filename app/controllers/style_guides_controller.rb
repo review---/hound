@@ -39,6 +39,6 @@ class StyleGuidesController < ApplicationController
   end
 
   def rules
-    params[:style_guide][:rules]
+    params[:style_guide_config][:rules]
   end
 end

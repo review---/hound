@@ -1,0 +1,131 @@
+.style-guides {
+  padding: 1em;
+
+  h1 {
+    font-size: 1.5em;
+  }
+}
+
+.rule {
+  .rule-header {
+    @include clearfix;
+    background: #F7F8FA;
+    box-shadow: 0 1px 2px 0 rgba(#F0F0F0, 0.70);
+  }
+
+  .rule-header,
+  .extra-options {
+    border: 1px solid #E0E0E0;
+    padding: 1rem;
+  }
+
+  .rule-name,
+  .extra-options {
+    margin: 0;
+  }
+
+  &.active-rule {
+    .extra-options {
+      display: block;
+    }
+  }
+
+  .extra-options {
+    @include clearfix;
+    border-top: none;
+    display: none;
+    font-size: em(13px);
+
+    dt, dd {
+      margin: 0;
+    }
+
+    dt {
+      float: left;
+    }
+
+    dd {
+      float: right;
+    }
+
+    &.multiple-options {
+      dt {
+        clear: both;
+      }
+
+      dt, dd {
+        margin-bottom: 1em;
+
+        &:last-of-type {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+
+  .rule-name {
+    float: left;
+    font-size: 1em;
+    font-weight: normal;
+  }
+
+  input[type="number"] {
+    width: 4em;
+  }
+
+  & ~ & {
+    margin-top: 1em;
+  }
+
+  .toggle {
+    @include user-select(none);
+    border-radius: 24px;
+    border: 1px solid darken($base-border-color, 5%);
+    display: block;
+    float: right;
+    height: 24px;
+    padding: 1px;
+    position: relative;
+    width: 50px;
+
+    &:hover {
+      border: inherit;
+      cursor: pointer;
+    }
+
+    &:before {
+      @include size(20px);
+      @include position(absolute, 0px 0 0 0px);
+      @include transition(all 0.25s linear);
+      background-color: rgb(255,255,255);
+      border: 1px solid $base-border-color;
+      border-radius: 100%;
+      box-shadow: 0 1px 2px 0 rgba(0,0,0,0.1);
+      color: #fff;
+      content: '';
+      display: block;
+      z-index: 2;
+    }
+  }
+}
+
+.toggle-check {
+  display: none;
+}
+
+.toggle-check:checked + label.toggle {
+  background-color: #42E643;
+
+  &:before {
+    background-color: rgb(255,255,255);
+    left: 26px;
+  }
+}
+
+.ruleset-actions {
+  margin-top: 1em;
+
+  .button {
+    padding: 0.75em 1em;
+  }
+}

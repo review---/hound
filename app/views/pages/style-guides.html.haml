@@ -9,7 +9,7 @@
     advanced configurations, see our awesome configuration instructions. If your
     repo has a `hound.yml`, then these rules will be overridden.
 
-  = form_for @style_guide_config, url: "/owners/1/style_guides/#{@style_guide_config.id}", method: :put, class: "ruleset" do |config|
+  %form.ruleset
     .rule.active-rule
       .rule-header
         %h2.rule-name Line Length
@@ -19,7 +19,7 @@
         %dt
           %label{for: "max-length"} Max Length
         %dd
-          %input#max-length{type: "Number", name: "style_guide_config[rules][line_length][value]", value: @style_guide_config.rules["line_length"]["value"]}
+          %input#max-length{type: "Number"}
           characters
 
     .rule.active-rule
@@ -31,9 +31,9 @@
         %dt
           %label{for: "quotes"} Preferred Quotation Mark Type
         %dd
-          %input#quotes-single{type: "radio", name: "style_guide_config[rules][string_literals][value]", value: "single_quotes"}
+          %input#quotes-single{type: "radio", name: "quotes-type"}
           %label{for: "quotes-single"} Single
-          %input#quotes-double{type: "radio", name: "style_guide_config[rules][string_literals][value]", value: "double_quotes"}
+          %input#quotes-double{type: "radio", name: "quotes-type"}
           %label{for: "quotes-double"} Double
 
     .rule.active-rule
@@ -43,14 +43,14 @@
         %label.toggle{for: "paths"}
       %dl.extra-options
         %dt
-          %label{for: "path-name"} Path
+          %label{for: "path-name"} Paths
         %dd
-          %input#path-name{type: "text", name: "style_guide_config[rules][ignore_paths][value]", value: @style_guide_config.rules["ignore_paths"]["value"] }
+          %input#path-name{type: "text"}
 
     .rule.active-rule
       .rule-header
         %h2.rule-name Hash Syntax Type
-        %input.toggle-check{type: "checkbox", id: "hash-syntax", name: "style_guide_config[rules][hash_syntax][value]"}
+        %input.toggle-check{type: "checkbox", id: "hash-syntax"}
         %label.toggle{for: "hash-syntax"}
       %dl.extra-options
         %dt
@@ -67,28 +67,32 @@
         %dt
           %label{for: 'collection-map'} Map
         %dd
-          %select#collection-map{name: "style_guide_config[rules][collection_methods][map][value]" }
+          %select#collection-map{name: "collection_map" }
+            %option{ value: "" } Don't Check
             %option{ value: "map" } Map
             %option{ value: "collect" } Collect
 
         %dt
           %label{for: 'collection-reduce'} Reduce
         %dd
-          %select#collection-reduce{name: "style_guide_config[rules][collection_methods][reduce][value]" }
+          %select#collection-reduce{name: "collection_reduce" }
+            %option{ value: "" } Don't Check
             %option{ value: "reduce" } Reduce
             %option{ value: "inject" } Inject
 
         %dt
           %label{for: 'collection-find'} Find
         %dd
-          %select#collection-find{name: "style_guide_config[rules][collection_methods][find][value]" }
+          %select#collection-find{name: "collection_find" }
+            %option{ value: "" } Don't Check
             %option{ value: "find" } Find
             %option{ value: "detect" } Detect
 
         %dt
           %label{for: 'collection-filter'} Filter
         %dd
-          %select#collection-filter{name: "style_guide_config[rules][collection_methods][filter][value]" }
+          %select#collection-filter{name: "collection_filter" }
+            %option{ value: "" } Don't Check
             %option{ value: "filter" } Filter
             %option{ value: "detect" } Detect
 
