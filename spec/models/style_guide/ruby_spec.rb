@@ -3,6 +3,8 @@ require "rubocop"
 require "sentry-raven"
 
 require "fast_spec_helper"
+require "lib/ext/rubocop_config"
+require "app/models/default_config"
 require "app/models/default_config_file"
 require "app/models/style_guide/base"
 require "app/models/style_guide/ruby"

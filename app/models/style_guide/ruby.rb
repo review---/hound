@@ -1,7 +1,7 @@
 # Determine Ruby style guide violations per-line.
 module StyleGuide
   class Ruby < Base
-    DEFAULT_CONFIG_FILENAME = "ruby.yml"
+    BASE_CONFIG_FILENAME = "ruby.yml"
 
     def violations_in_file(file)
       if config.file_to_exclude?(file.filename)
@@ -23,37 +23,25 @@ module StyleGuide
       RuboCop::ProcessedSource.new(file.content)
     end
 
-    def config
-      @config ||= RuboCop::Config.new(merged_config, "")
-    end
-
-    def merged_config
-      RuboCop::ConfigLoader.merge(default_config, custom_config)
-    rescue TypeError
-      default_config
-    end
-
-    def default_config
-      RuboCop::ConfigLoader.configuration_from_file(default_config_file)
-    end
-
-    def custom_config
-      RuboCop::Config.new(repo_config.for(name), "").tap do |config|
-        config.add_missing_namespaces
-        config.make_excludes_absolute
-      end
-    rescue NoMethodError
-      RuboCop::Config.new
-    end
-
     def rubocop_options
       if config["ShowCopNames"]
         { debug: true }
       end
     end
 
-    def default_config_file
-      DefaultConfigFile.new(DEFAULT_CONFIG_FILENAME, repository_owner).path
+    def config
+      @config ||= RuboCopConfig.new(custom_config, default_config).generate
+    end
+
+    def custom_config
+      repo_config.for(name)
+    end
+
+    def default_config
+      default_config = DefaultConfig.new(name).content
+      base_file = DefaultConfigFile.new(BASE_CONFIG_FILENAME, repository_owner)
+      base_config = YAML.load_file(base_file.path)
+      base_config.merge(default_config)
     end
   end
 end
