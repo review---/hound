@@ -28,7 +28,8 @@ class RuboCopMapper
       line_length: { name: "LineLength", value: "Max" },
       string_literals: { name: "StringLiterals", value: "EnforcedStyle" },
       hash_syntax: { name: "HashSyntax", value: "EnforcedStyle" },
-      ignore_paths: { name: "AllCops", value: "Exclude"}
+      ignore_paths: { name: "AllCops", value: "Exclude"},
+      collection_methods: { name: "CollectionMethods", value: "NotSupported" },
     }
   end
 end

@@ -30,10 +30,8 @@ class StyleChecker
 
   def style_guide(filename)
     style_guide_class = style_guide_class(filename)
-    style_guides[style_guide_class] ||= style_guide_class.new(
-      config,
-      pull_request.repository_owner
-    )
+    style_guides[style_guide_class] ||= style_guide_class.
+      new(config_for(name), pull_request.repository_owner)
   end
 
   def style_guide_class(filename)
@@ -49,7 +47,19 @@ class StyleChecker
     end
   end
 
-  def config
-    @config ||= RepoConfig.new(pull_request.head_commit)
+  def config_for(name)
+    style_guide_config = style_guide_config(name)
+
+    if style_guide_config
+      style_guide_config
+    else
+      RepoConfig.new(pull_request.head_commit)
+    end
+  end
+
+  def style_guide_config(name)
+    StyleGuideConfig
+      .for_owner_name(pull_request.repository_owner)
+      .find_by(name: name)
   end
 end

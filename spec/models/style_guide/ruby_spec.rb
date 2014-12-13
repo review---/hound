@@ -8,6 +8,7 @@ require "app/models/default_config"
 require "app/models/default_config_file"
 require "app/models/style_guide/base"
 require "app/models/style_guide/ruby"
+require "app/models/rubocop_mapper"
 require "app/models/violation"
 
 describe StyleGuide::Ruby, "#violations_in_file" do
@@ -512,8 +513,8 @@ end
   private
 
   def violations_in(content, config: nil, repository_owner: "ralph")
-    repo_config = double("RepoConfig", enabled_for?: true, for: config)
-    style_guide = StyleGuide::Ruby.new(repo_config, repository_owner)
+    style_guide_config = double("StyleGuideConfig", enabled?: true, for: config)
+    style_guide = StyleGuide::Ruby.new(style_guide_config, repository_owner)
     style_guide.violations_in_file(build_file(content)).flat_map(&:messages)
   end
 

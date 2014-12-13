@@ -4,7 +4,7 @@ module StyleGuide
     BASE_CONFIG_FILENAME = "ruby.yml"
 
     def violations_in_file(file)
-      if config.file_to_exclude?(file.filename)
+      if reviewer_config.file_to_exclude?(file.filename)
         []
       else
         team.inspect_file(parsed_source(file)).map do |violation|
@@ -16,7 +16,11 @@ module StyleGuide
     private
 
     def team
-      RuboCop::Cop::Team.new(RuboCop::Cop::Cop.all, config, rubocop_options)
+      RuboCop::Cop::Team.new(
+        RuboCop::Cop::Cop.all,
+        reviewer_config,
+        rubocop_options
+      )
     end
 
     def parsed_source(file)
@@ -24,24 +28,34 @@ module StyleGuide
     end
 
     def rubocop_options
-      if config["ShowCopNames"]
+      if reviewer_config["ShowCopNames"]
         { debug: true }
       end
     end
 
-    def config
-      @config ||= RuboCopConfig.new(custom_config, default_config).generate
+    def reviewer_config
+      @reviewer_config ||= RuboCopConfig.
+        new(default_config: default_config, custom_config: custom_config).
+        generate
     end
 
     def custom_config
-      repo_config.for(name)
+      config.for(name)
     end
 
     def default_config
-      default_config = DefaultConfig.new(name).content
-      base_file = DefaultConfigFile.new(BASE_CONFIG_FILENAME, repository_owner)
+      base_file = DefaultConfigFile.new(BASE_CONFIG_FILENAME, owner_name)
       base_config = YAML.load_file(base_file.path)
-      base_config.merge(default_config)
+      base_config.merge(mapped_default_config)
+    end
+
+    def mapped_default_config
+      default_config = DefaultConfig.
+        new(name).
+        content.
+        deep_symbolize_keys
+
+      RuboCopMapper.new(default_config[:rules]).convert
     end
   end
 end
