@@ -1,7 +1,7 @@
-namespace :repo_data_update do
+namespace :repo do
   desc "Update information for repos without privacy or org info"
 
-  task cleanup_duplicates: :environment do
+  task update_privacy_and_org_info: :environment do
     repo_ids = Repo.
       where("private IS ? OR in_organization IS ?", nil, nil).
       pluck(:id)
@@ -11,6 +11,6 @@ namespace :repo_data_update do
       JobQueue.push(RepoInformationJob, repo_id)
     end
 
-    puts 'Done scheduling jobs.'
+    puts "Done scheduling #{repo_ids.size} jobs."
   end
 end
