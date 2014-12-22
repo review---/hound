@@ -10,20 +10,24 @@ rules:
     value: 80
 
   string_literals:
-    value: single_quotes
+    value: double_quotes
     options:
       - single_quotes
       - double_quotes
 
   hash_syntax:
-    value: true
+    value: new
+    options:
+      - new
+      - hash_rockets
+
 
   collection_methods:
     value:
-      map: map
-      reduce: reduce
+      collect: map
+      reduce: inject
       find: detect
-      filter: select
+      find_all: select
     options:
       map:
         - map
@@ -36,4 +40,3 @@ rules:
         - detect
       filter:
         - find_all
-        - select

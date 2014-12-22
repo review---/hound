@@ -13,8 +13,13 @@ class RuboCopConfig
   attr_reader :default_config, :custom_config
 
   def merged_config
-    RuboCop::ConfigLoader.merge(
+    merged_defaults = RuboCop::ConfigLoader.merge_with_default(
       normalize_config(default_config),
+      nil
+    )
+
+    RuboCop::ConfigLoader.merge(
+      merged_defaults,
       normalize_config(custom_config)
     )
   # rescue TypeError

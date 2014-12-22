@@ -40,7 +40,7 @@ module StyleGuide
     end
 
     def custom_config
-      config.for(name)
+      RuboCopMapper.new(config.for(name)).convert
     end
 
     def default_config
@@ -50,12 +50,9 @@ module StyleGuide
     end
 
     def mapped_default_config
-      default_config = DefaultConfig.
-        new(name).
-        content.
-        deep_symbolize_keys
+      defaults = DefaultConfig.new(name).content.deep_symbolize_keys
 
-      RuboCopMapper.new(default_config[:rules]).convert
+      RuboCopMapper.new(defaults[:rules]).convert
     end
   end
 end

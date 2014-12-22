@@ -4,7 +4,7 @@ require "app/models/rubocop_mapper"
 describe RuboCopMapper do
   describe "#convert" do
     it "parses a single style guide config rules into RuboCop configs" do
-      hound_rules = {
+      rules = {
         line_length: { value: 80 }
       }
       expected_rubocop_configs = {
@@ -12,7 +12,7 @@ describe RuboCopMapper do
           "Max" => 80
         }
       }
-      mapper = RuboCopMapper.new(hound_rules)
+      mapper = RuboCopMapper.new(rules)
 
       rubocop_configs = mapper.convert
 
@@ -20,10 +20,10 @@ describe RuboCopMapper do
     end
 
     it "parses multiple style guide config rules into RuboCop configs" do
-      hound_rules = {
+      rules = {
         line_length: { value: 80 },
         string_literals: { value: "single_quotes" },
-        hash_syntax: { value: "hash_rockets" }, # where did we end on this?
+        hash_syntax: { value: "new" },
         ignore_paths: { value: ["vendor/**/*", "lib/assets/**/*"] }
       }
       expected_rubocop_configs = {
@@ -34,17 +34,38 @@ describe RuboCopMapper do
           "EnforcedStyle" => "single_quotes"
         },
         "HashSyntax" => {
-          "EnforcedStyle" => "hash_rockets"
+          "EnforcedStyle" => "ruby1.9"
         },
         "AllCops" => {
           "Exclude" => ["vendor/**/*", "lib/assets/**/*"]
         }
       }
-      mapper = RuboCopMapper.new(hound_rules)
+      mapper = RuboCopMapper.new(rules)
 
       rubocop_configs = mapper.convert
 
       expect(rubocop_configs).to eq expected_rubocop_configs
+    end
+
+    it "handles key:value choices" do
+      rules = {
+        collection_methods: {
+          value: { find: "detect", reduce: "inject" }
+        },
+      }
+      expected_config = {
+        "CollectionMethods" => {
+          "PreferredMethods" => {
+            "find" => "detect",
+            "reduce" => "inject",
+          }
+        }
+      }
+      mapper = RuboCopMapper.new(rules)
+
+      converted_config = mapper.convert
+
+      expect(converted_config).to eq expected_config
     end
   end
 end
