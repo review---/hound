@@ -13,15 +13,6 @@ class InactivateReposWithoutPrivacyOrOrgInfo < ActiveRecord::Migration
   end
 
   def down
-    sql = <<-SQL
-      UPDATE "repos"
-        SET "active" = 't'
-        WHERE
-          "active" IS false
-          AND
-          ("private" OR "in_organization" IS NULL)
-    SQL
-
-    ActiveRecord::Base.connection.execute(sql)
+    ActiveRecord::IrreversibleMigration
   end
 end
